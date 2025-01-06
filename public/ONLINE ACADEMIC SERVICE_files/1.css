@@ -1,0 +1,133 @@
+body {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    margin-top:0;
+    margin-bottom:0;
+    margin-left:0;
+    margin-right:0;
+    background-color:#EFEBDE;
+}
+
+td {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+}
+
+th {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+}
+.th {
+    color: #000000;
+    font-family:Tahoma;
+    font-weight: bold;
+    background-color:#AEAB9B;
+    font-size:12px;
+}
+.td {
+    color: #000000;
+    font-family:Tahoma;
+    font-size:8pt;
+    background-color:#FFFFFF;
+    text-align:center;
+}
+.jd {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    color:#000000;
+}
+.jdr {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    color:#000000;
+    text-align:right;
+}
+.jdc {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    color:#000000;
+    text-align:center;
+}
+.vl {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:10;
+    text-align:left;
+    color:#004080;
+}
+.cc {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:10px;
+    height:18;
+    text-align:center;
+    color:#004080;
+    width: 100%;
+}
+.bc {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:18;
+    text-align:center;
+    color:#004080;
+}
+.vr {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:10;
+    text-align:right;
+    color:#004080;
+}
+.vc {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:13;
+    text-align:center;
+    color:#004080;
+}
+.vco {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:13;
+    color:#004080;
+    cursor:pointer;
+    background-color:#FF99FF;
+}
+.tdli {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:14px;
+    height:10;
+    text-align:center;
+    color:#004080;
+}
+.tdlo {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:14px;
+    height:10;
+    text-align:center;
+    color:#0000FF;
+    cursor:pointer;
+    background-color:#FF99FF;
+}
+.v14b {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:14px;
+    font-weight:900;
+}
+.v10 {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:10px;
+    font-weight:normal;
+}.cl {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:11px;
+    height:18;
+    text-align:left;
+    color:#004080;
+}
+.vbut {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:14px;
+    font-weight:900;
+    color:red;
+    font-weight:bold;
+}
