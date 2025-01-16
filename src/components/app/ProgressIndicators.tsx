@@ -15,6 +15,7 @@ interface ProgressIndicatorsProps {
   steps: ProgressItem[]
   currentStepIndex?: number
   onStepChange?: (stepIndex: number) => void
+  disabled?: boolean
 }
 
 export interface ProgressIndicatorsRef {
@@ -26,6 +27,7 @@ export default function ProgressIndicators({
   steps,
   currentStepIndex = 0,
   onStepChange,
+  disabled = false,
 }: ProgressIndicatorsProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(currentStepIndex)
 
@@ -51,15 +53,17 @@ export default function ProgressIndicators({
           const isUpcoming = index > currentIndex
 
           return (
-            <div className={cn(
-              "relative w-full flex justify-center items-center",
-              index !== steps.length - 1 && "after:content-[''] after:absolute after:h-1 after:w-full after:rounded-full after:inset-0 after:-z-10 after:top-1/2 after:left-0 after:translate-x-1/2 after:-translate-y-1/2 after:bg-[#ec8d00]",
-              isCurrent && "after:bg-gray-300",
-              isUpcoming && "after:bg-gray-300"
-            )}>
+            <div
+              key={index}
+              className={cn(
+                "relative w-full flex justify-center items-center",
+                index !== steps.length - 1 && "after:content-[''] after:absolute after:h-1 after:w-full after:rounded-full after:inset-0 after:-z-10 after:top-1/2 after:left-0 after:translate-x-1/2 after:-translate-y-1/2 after:bg-[#ec8d00]",
+                isCurrent && "after:bg-gray-300",
+                isUpcoming && "after:bg-gray-300"
+              )}>
               <button
                 type="button"
-                key={index}
+                disabled={disabled}
                 onClick={() => handleStepClick(index)}
                 className={cn(
                   "h-8 aspect-square rounded-full text-center flex justify-center items-center relative transition-all duration-300 ease-linear",
@@ -79,14 +83,15 @@ export default function ProgressIndicators({
 
                 <TooltipProvider key={item.label}>
                   <Tooltip>
-                    <TooltipTrigger type="button"
+                    <TooltipTrigger
+                      asChild
                       className={cn(
                         "absolute -bottom-10 line-clamp-2 text-center text-xs text-gray-400 transition-colors duration-300 ease-linear",
                         isCompleted && "text-[#ec8d00]",
                         isCurrent && "text-[#ec8d00]",
                         isUpcoming && "text-gray-400"
                       )}>
-                      {item.label}
+                      <p>{item.label}</p>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>{item.label}</p>

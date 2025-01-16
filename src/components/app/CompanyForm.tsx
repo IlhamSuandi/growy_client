@@ -113,7 +113,14 @@ export default function CompanyForm() {
                 <FormControl>
                   <Switch
                     defaultChecked={field.value}
-                    onChange={(checked) => field.onChange(checked)}
+                    onChange={(checked) => {
+                      if (!checked.target.value) {
+                        form.setValue("company.checkOutTime", undefined)
+                      } else {
+                        form.setValue("company.workingHours", undefined)
+                      }
+                      return field.onChange(checked)
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -121,7 +128,7 @@ export default function CompanyForm() {
             )}
           />
 
-          {form.watch("company.useCheckout") === true ? (
+          {form.watch("company.useCheckout") ? (
             <FormField
               control={form.control}
               name="company.checkOutTime"

@@ -7,46 +7,26 @@ import { z } from "zod"
 import { cn } from "@/lib/utils"
 import CompanyForm from "@/components/app/CompanyForm"
 import BranchForm from "@/components/app/BranchForm"
+import { useLogout } from "@/hooks/auth/useLogout"
+import EmployeeForm from "@/components/app/EmployeeForm"
+import { createCompanySchema } from "@/schemas/company"
+import { createBranchSchema } from "@/schemas/branch"
+import { createEmployeeSchema } from "@/schemas/employee"
 
 const formSchema = z.object({
-  company: z.object({
-    name: z.string().min(3, {
-      message: "Company name must be at least 3 characters",
-    }),
-    address: z.string().min(3, {
-      message: "Company address must be at least 3 characters",
-    }),
-    email: z.string().email({
-      message: "Invalid email address",
-    }),
-    checkInTime: z
-      .date()
-      .or(z.string().optional())
-      .refine((value) => value instanceof Date || value !== undefined, {
-        message: "Check-in time is required",
-      }),
-    checkOutTime: z.date().optional(),
-    workingHours: z.number().min(1, {
-      message: "Working hours must be at least 1",
-    }),
-    useCheckout: z.boolean(),
-  }),
+  company: createCompanySchema,
   branches: z.array(
-    z.object({
-      name: z.string().min(3, {
-        message: "Branch name must be at least 3 characters",
-      }),
-      address: z.string().min(3, {
-        message: "Branch address must be at least 3 characters",
-      }),
-    })
+    createBranchSchema
   ),
+  employees: z.array(
+    createEmployeeSchema
+  )
 })
 
 const steps = [
-  { label: "Create Company", component: CompanyForm },
-  { label: "Add Branch", component: BranchForm },
-  { label: "Invite Employees", component: EmployeesForm },
+  { label: "Create Company", name: "company", component: CompanyForm },
+  { label: "Add Branch", name: "branch", component: BranchForm },
+  { label: "Invite Employees", name: "employees", component: EmployeeForm },
 ]
 
 export default function Setup() {
@@ -59,11 +39,13 @@ export default function Setup() {
         email: "",
         checkInTime: undefined,
         checkOutTime: undefined,
-        workingHours: 8,
+        workingHours: 0,
         useCheckout: true,
       },
       branches: [],
+      employees: [],
     },
+    mode: "onChange"
   })
 
   const [currentStep, setCurrentStep] = useState(0)
@@ -103,6 +85,8 @@ export default function Setup() {
     }
   }
 
+  const { mutate: logout } = useLogout()
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center">
       <div className="w-full max-w-4xl min-h-screen flex flex-col px-5 sm:px-20 py-5 pb-10">
@@ -114,6 +98,7 @@ export default function Setup() {
               steps={steps}
               currentStepIndex={currentStep}
               onStepChange={(stepIndex) => setCurrentStep(stepIndex)}
+              disabled={!form.formState.isValid}
             />
           </div>
         </div>
@@ -140,7 +125,7 @@ export default function Setup() {
             {/* Navigation Buttons */}
             <div className="w-full z-50 flex justify-between gap-4 mt-4">
               <Button
-                className="w-full bg-[#405059] text-white disabled:opacity-100 disabled:bg-[#a0bfd3]"
+                className="w-full bg-[#405059] text-white"
                 type="button"
                 onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
                 disabled={currentStep === 0}
@@ -149,8 +134,9 @@ export default function Setup() {
               </Button>
               {currentStep < steps.length - 1 ? (
                 <Button
-                  className="w-full bg-[#405059] text-white disabled:opacity-100 disabled:bg-[#a0bfd3]"
+                  className="w-full bg-[#405059] text-white"
                   type="button"
+                  disabled={!form.formState.isValid}
                   onClick={(event) => {
                     event.preventDefault() // Prevents accidental form submission
                     setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1))
@@ -166,14 +152,17 @@ export default function Setup() {
                   Submit
                 </Button>
               )}
+              <Button
+                className="w-full bg-[#405059] text-white"
+                type="button"
+                onClick={() => logout()}
+              >
+                logout
+              </Button>
             </div>
           </form>
         </FormProvider>
       </div>
     </div>
   )
-}
-
-function EmployeesForm() {
-  return <div>Add Employees Form (TBD)</div>
 }

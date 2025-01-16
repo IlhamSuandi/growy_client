@@ -12,6 +12,10 @@ import { commonApiClient } from "@/utils/apiClient"
 // user1
 // email: user1@gmail.com
 // password: User123+
+//
+// admin
+// email: admin@example.com
+// password: Securepassword+
 
 const login = async (_email: string, _password: string) => {
   const { configuration, basePath, axiosInstance } = commonApiClient()
