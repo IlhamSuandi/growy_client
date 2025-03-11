@@ -8,10 +8,10 @@ import { cn } from "@/lib/utils"
 import CompanyForm from "@/components/app/CompanyForm"
 import BranchForm from "@/components/app/BranchForm"
 import { useLogout } from "@/hooks/auth/useLogout"
-import EmployeeForm from "@/components/app/EmployeeForm"
 import { createCompanySchema } from "@/schemas/company"
 import { createBranchSchema } from "@/schemas/branch"
 import { createEmployeeSchema } from "@/schemas/employee"
+import { useCheckIn } from "@/hooks/attendance/useCheckIn"
 
 const formSchema = z.object({
   company: createCompanySchema,
@@ -26,7 +26,6 @@ const formSchema = z.object({
 const steps = [
   { label: "Create Company", name: "company", component: CompanyForm },
   { label: "Add Branch", name: "branch", component: BranchForm },
-  { label: "Invite Employees", name: "employees", component: EmployeeForm },
 ]
 
 export default function Setup() {
@@ -86,6 +85,7 @@ export default function Setup() {
   }
 
   const { mutate: logout } = useLogout()
+  const { mutate: checkIn } = useCheckIn()
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center">
@@ -159,6 +159,14 @@ export default function Setup() {
               >
                 logout
               </Button>
+              <Button
+                className="w-full bg-[#405059] text-white"
+                type="button"
+                onClick={() => checkIn()}
+              >
+                Checkin
+              </Button>
+
             </div>
           </form>
         </FormProvider>
