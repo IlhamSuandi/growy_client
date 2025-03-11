@@ -33,6 +33,12 @@ export interface DtoTokenResponse {
     expiresIn?: number;
     /**
      * 
+     * @type {boolean}
+     * @memberof DtoTokenResponse
+     */
+    isOnboarded?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof DtoTokenResponse
      */
@@ -58,6 +64,7 @@ export function DtoTokenResponseFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'accessToken': json['access_token'] == null ? undefined : json['access_token'],
         'expiresIn': json['expires_in'] == null ? undefined : json['expires_in'],
+        'isOnboarded': json['is_onboarded'] == null ? undefined : json['is_onboarded'],
         'tokenType': json['token_type'] == null ? undefined : json['token_type'],
     };
 }
@@ -75,6 +82,7 @@ export function DtoTokenResponseToJSONTyped(value?: DtoTokenResponse | null, ign
         
         'access_token': value['accessToken'],
         'expires_in': value['expiresIn'],
+        'is_onboarded': value['isOnboarded'],
         'token_type': value['tokenType'],
     };
 }

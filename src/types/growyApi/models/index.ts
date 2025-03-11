@@ -11,6 +11,7 @@ export * from './DtoAddEmployeeResponse';
 export * from './DtoCheckInRequest';
 export * from './DtoCheckInResponse';
 export * from './DtoCreateBranchRequest';
+export * from './DtoCreateCompanyRequest';
 export * from './DtoCreateQrRequest';
 export * from './DtoCreateQrResponse';
 export * from './DtoGetAttendancesResponse';

@@ -113,6 +113,12 @@ export interface ModelUser {
     isEmailVerified?: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof ModelUser
+     */
+    isOnBoarded?: boolean;
+    /**
+     * 
      * @type {ModelLog}
      * @memberof ModelUser
      */
@@ -123,6 +129,12 @@ export interface ModelUser {
      * @memberof ModelUser
      */
     permissions?: Array<ModelPermission>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelUser
+     */
+    picture?: string;
     /**
      * 
      * @type {ModelQRCode}
@@ -185,8 +197,10 @@ export function ModelUserFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'email': json['email'] == null ? undefined : json['email'],
         'employee': json['employee'] == null ? undefined : ModelEmployeeFromJSON(json['employee']),
         'isEmailVerified': json['is_email_verified'] == null ? undefined : json['is_email_verified'],
+        'isOnBoarded': json['is_on_boarded'] == null ? undefined : json['is_on_boarded'],
         'log': json['log'] == null ? undefined : ModelLogFromJSON(json['log']),
         'permissions': json['permissions'] == null ? undefined : ((json['permissions'] as Array<any>).map(ModelPermissionFromJSON)),
+        'picture': json['picture'] == null ? undefined : json['picture'],
         'qrcode': json['qrcode'] == null ? undefined : ModelQRCodeFromJSON(json['qrcode']),
         'role': json['role'] == null ? undefined : json['role'],
         'sessions': json['sessions'] == null ? undefined : ((json['sessions'] as Array<any>).map(ModelSessionFromJSON)),
@@ -214,8 +228,10 @@ export function ModelUserToJSONTyped(value?: ModelUser | null, ignoreDiscriminat
         'email': value['email'],
         'employee': ModelEmployeeToJSON(value['employee']),
         'is_email_verified': value['isEmailVerified'],
+        'is_on_boarded': value['isOnBoarded'],
         'log': ModelLogToJSON(value['log']),
         'permissions': value['permissions'] == null ? undefined : ((value['permissions'] as Array<any>).map(ModelPermissionToJSON)),
+        'picture': value['picture'],
         'qrcode': ModelQRCodeToJSON(value['qrcode']),
         'role': value['role'],
         'sessions': value['sessions'] == null ? undefined : ((value['sessions'] as Array<any>).map(ModelSessionToJSON)),

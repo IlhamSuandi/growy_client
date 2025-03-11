@@ -82,6 +82,12 @@ export interface ModelCompany {
      * @type {string}
      * @memberof ModelCompany
      */
+    picture?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelCompany
+     */
     updatedAt?: string;
     /**
      * 
@@ -120,6 +126,7 @@ export function ModelCompanyFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'name': json['name'] == null ? undefined : json['name'],
         'options': json['options'] == null ? undefined : ModelCompanyOptionFromJSON(json['options']),
         'ownerEmail': json['owner_email'] == null ? undefined : json['owner_email'],
+        'picture': json['picture'] == null ? undefined : json['picture'],
         'updatedAt': json['updated_at'] == null ? undefined : json['updated_at'],
         'uuid': json['uuid'] == null ? undefined : json['uuid'],
         'workSchedule': json['work_schedule'] == null ? undefined : ModelWorkScheduleFromJSON(json['work_schedule']),
@@ -143,6 +150,7 @@ export function ModelCompanyToJSONTyped(value?: ModelCompany | null, ignoreDiscr
         'name': value['name'],
         'options': ModelCompanyOptionToJSON(value['options']),
         'owner_email': value['ownerEmail'],
+        'picture': value['picture'],
         'updated_at': value['updatedAt'],
         'uuid': value['uuid'],
         'work_schedule': ModelWorkScheduleToJSON(value['workSchedule']),
