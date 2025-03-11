@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "fix-lint": "eslint . --fix",
-    "gen-types": "openapi-generator-cli generate -i ../server/docs/swagger.json -g typescript-fetch -o src/types/growyApi"
+    "gen-types": "openapi-generator-cli generate -i ../server/docs/swagger.json -g typescript-axios -o src/types/growyApi"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
