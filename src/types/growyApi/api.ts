@@ -176,6 +176,31 @@ export interface CompanyGet200Response {
 /**
  * 
  * @export
+ * @interface CompanyPost201Response
+ */
+export interface CompanyPost201Response {
+    /**
+     * 
+     * @type {ModelCompany}
+     * @memberof CompanyPost201Response
+     */
+    'data'?: ModelCompany;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyPost201Response
+     */
+    'message'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CompanyPost201Response
+     */
+    'status'?: number;
+}
+/**
+ * 
+ * @export
  * @interface DtoAddEmployeeRequest
  */
 export interface DtoAddEmployeeRequest {
@@ -297,6 +322,25 @@ export interface DtoCreateBranchRequest {
      * @memberof DtoCreateBranchRequest
      */
     'company_name': string;
+}
+/**
+ * 
+ * @export
+ * @interface DtoCreateCompanyRequest
+ */
+export interface DtoCreateCompanyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DtoCreateCompanyRequest
+     */
+    'address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DtoCreateCompanyRequest
+     */
+    'name'?: string;
 }
 /**
  * 
@@ -461,6 +505,12 @@ export interface DtoTokenResponse {
      * @memberof DtoTokenResponse
      */
     'expires_in'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DtoTokenResponse
+     */
+    'is_onboarded'?: boolean;
     /**
      * 
      * @type {string}
@@ -682,6 +732,12 @@ export interface ModelCompany {
      * @memberof ModelCompany
      */
     'owner_email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelCompany
+     */
+    'picture'?: string;
     /**
      * 
      * @type {string}
@@ -1191,6 +1247,12 @@ export interface ModelUser {
     'is_email_verified'?: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof ModelUser
+     */
+    'is_on_boarded'?: boolean;
+    /**
+     * 
      * @type {ModelLog}
      * @memberof ModelUser
      */
@@ -1201,6 +1263,12 @@ export interface ModelUser {
      * @memberof ModelUser
      */
     'permissions'?: Array<ModelPermission>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelUser
+     */
+    'picture'?: string;
     /**
      * 
      * @type {ModelQRCode}
@@ -2236,6 +2304,45 @@ export const CompanyApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * creating new company
+         * @summary Create new company
+         * @param {DtoCreateCompanyRequest} request Request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyPost: async (request: DtoCreateCompanyRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'request' is not null or undefined
+            assertParamExists('companyPost', 'request', request)
+            const localVarPath = `/company`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication BearerAuth required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(request, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2258,6 +2365,19 @@ export const CompanyApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['CompanyApi.companyGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * creating new company
+         * @summary Create new company
+         * @param {DtoCreateCompanyRequest} request Request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyPost(request: DtoCreateCompanyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyPost201Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyPost(request, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CompanyApi.companyPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2276,6 +2396,16 @@ export const CompanyApiFactory = function (configuration?: Configuration, basePa
          */
         companyGet(options?: RawAxiosRequestConfig): AxiosPromise<CompanyGet200Response> {
             return localVarFp.companyGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * creating new company
+         * @summary Create new company
+         * @param {DtoCreateCompanyRequest} request Request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyPost(request: DtoCreateCompanyRequest, options?: RawAxiosRequestConfig): AxiosPromise<CompanyPost201Response> {
+            return localVarFp.companyPost(request, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2296,6 +2426,18 @@ export class CompanyApi extends BaseAPI {
      */
     public companyGet(options?: RawAxiosRequestConfig) {
         return CompanyApiFp(this.configuration).companyGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * creating new company
+     * @summary Create new company
+     * @param {DtoCreateCompanyRequest} request Request body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public companyPost(request: DtoCreateCompanyRequest, options?: RawAxiosRequestConfig) {
+        return CompanyApiFp(this.configuration).companyPost(request, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
