@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useTokenState } from "@/states/token"
 import { AuthApi, Configuration } from "@/types/growyApi"
+import { Alert } from "@/components/app/Alert"
 
 const apiClient = axios.create({
   withCredentials: true,
@@ -26,7 +27,14 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
     const { setToken, setAuthenticated } = useTokenState.getState()
-    // const navigate = useNavigate()
+
+    if (error.response.status !== 401) {
+      Alert({
+        title: error.response.data.message,
+        icon: "error",
+        timer: 2000,
+      })
+    }
 
     if (error.response.status === 401) {
       originalRequest._retry = true
