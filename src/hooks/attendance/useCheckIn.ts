@@ -1,6 +1,6 @@
 import { useTokenState } from "@/states/token"
 import { AttendanceApi, DtoCheckInResponse } from "@/types/growyApi"
-import { defaultHeaders } from "@/utils/requestHeaders"
+import { commonApiClient } from "@/utils/apiClient"
 import { useMutation } from "@tanstack/react-query"
 
 const checkIn = async (accessToken?: string) => {
@@ -8,17 +8,15 @@ const checkIn = async (accessToken?: string) => {
     throw new Error("Missing authentication or check-in token")
   }
 
-  const attendanceApi = new AttendanceApi()
+  const { configuration, basePath, axiosInstance } = commonApiClient()
+  const attendanceApi = new AttendanceApi(configuration, basePath, axiosInstance)
   const response = await attendanceApi.attendanceCheckInPost(
     {
-      request: {
-        location: "jakarta",
-      },
+      location: "jakarta",
     },
-    defaultHeaders()
   )
 
-  return response.data
+  return response.data.data
 }
 
 export const useCheckIn = () => {
@@ -27,8 +25,8 @@ export const useCheckIn = () => {
   return useMutation<DtoCheckInResponse | undefined, any>({
     mutationKey: ["checkin"],
     mutationFn: () => {
-      if (!token?.accessToken) throw new Error("Authentication token is missing.")
-      return checkIn(token.accessToken)
+      if (!token?.access_token) throw new Error("Authentication token is missing.")
+      return checkIn(token.access_token)
     },
     onSuccess: (data) => {
       console.log("Check-in successful:", data)
