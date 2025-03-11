@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useEffect } from "react"
 import { Alert } from "@/components/app/Alert"
+import { useAddEmployee } from "@/hooks/employee/addEmployee"
 
 export default function EmployeeForm() {
   const form = useFormContext()
@@ -13,8 +14,11 @@ export default function EmployeeForm() {
     control: form.control,
   })
 
+  const { mutate: addEmployee, isSuccess, isError } = useAddEmployee()
+
   const branches = form.getValues("branches")
   const employees = form.getValues("employees")
+  const employee = form.getValues("employee")
 
   useEffect(() => {
     if (branches.length !== 0) {
@@ -25,6 +29,78 @@ export default function EmployeeForm() {
       form.setValue("employee.branch_name", mainBranch.name)
     }
   }, [branches, employees, form])
+
+  const formValidation = (): boolean => {
+    if (employee.email && !employee.branch_name) {
+      form.setError("employee.branch_name", {
+        type: "manual",
+        message: "Branch is required",
+      })
+      return false
+    }
+
+    if (!employee.email) {
+      form.setError("employee.email", {
+        type: "manual",
+        message: "Employee email is required",
+      })
+      return false
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(employee.email)) {
+      form.setError("employee.email", {
+        type: "manual",
+        message: "Invalid email address.",
+      })
+      return false
+    }
+
+    const isDuplicate = employees.some(
+      (existingBranch: { email: string }) =>
+        existingBranch.email === employee.email
+    )
+
+    if (isDuplicate) {
+      form.setError("employee.email", {
+        type: "manual",
+        message: "employee name already exists",
+      })
+      return false
+    }
+
+    const companyName = form.getValues("company.name")
+    employee.company_name = companyName
+
+    formActions.append(employee)
+    return true
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      Alert({
+        title: "Invite Sent",
+        icon: "success",
+        timer: 2000,
+      })
+
+      form.reset()
+    }
+
+    if (isError) {
+      Alert({
+        title: "Error Adding User",
+        icon: "error",
+        timer: 2000,
+      })
+    }
+  }, [isError, isSuccess, form])
+
+  const sendInvite = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const isValid = formValidation()
+    if (isValid) {
+      addEmployee(employee)
+    }
+  }
 
   return (
     <div>
@@ -119,57 +195,7 @@ export default function EmployeeForm() {
       <Button
         variant="outline"
         size="sm"
-        onClick={(e) => {
-          e.preventDefault()
-          const employee = form.getValues("employee")
-
-          if (employee.email && !employee.branch_name) {
-            form.setError("employee.branch_name", {
-              type: "manual",
-              message: "Branch is required",
-            })
-            return
-          }
-
-          if (!employee.email) {
-            form.setError("employee.email", {
-              type: "manual",
-              message: "Employee email is required",
-            })
-            return
-          }
-
-          if (!/^\S+@\S+\.\S+$/.test(employee.email)) {
-            form.setError("employee.email", {
-              type: "manual",
-              message: "Invalid email address.",
-            })
-            return
-          }
-
-          const isDuplicate = employees.some(
-            (existingBranch: { email: string }) =>
-              existingBranch.email === employee.email
-          )
-
-          if (isDuplicate) {
-            form.setError("employee.email", {
-              type: "manual",
-              message: "employee name already exists",
-            })
-            return
-          }
-
-          const companyName = form.getValues("company.name")
-          employee.company_name = companyName
-
-          formActions.append(employee)
-          Alert({
-            title: "Invite Sent",
-            icon: "success",
-            timer: 2000,
-          })
-        }}
+        onClick={sendInvite}
       >
         Send Invite
       </Button>
